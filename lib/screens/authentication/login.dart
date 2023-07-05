@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -9,6 +11,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  final Map<String, dynamic> _userFormData = {};
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +69,18 @@ class _LoginState extends State<Login> {
                                               fontWeight: FontWeight.normal,
                                               fontSize: 14)),
                                       keyboardType: TextInputType.text,
+                                      enableSuggestions: false,
+                                      autocorrect: false,
+                                      validator: (email) {
+                                        if (email!.isEmpty ||
+                                            email?.length == 0) {
+                                          return "invalid email or name";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (email) {
+                                        _userFormData['email'] = email;
+                                      },
                                     ),
                                   )
                                 ],
@@ -85,14 +101,24 @@ class _LoginState extends State<Login> {
                                   ),
                                   Container(
                                     child: TextFormField(
-                                        decoration: InputDecoration(
-                                            hintText: "password",
-                                            hintStyle: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 14)),
-                                        keyboardType: TextInputType.text,
-                                        obscureText: true),
+                                      decoration: InputDecoration(
+                                          hintText: "password",
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 14)),
+                                      keyboardType: TextInputType.text,
+                                      obscureText: true,
+                                      validator: (password) {
+                                        if (password!.isEmpty) {
+                                          return "password is required";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (password) {
+                                        _userFormData['password'] = password;
+                                      },
+                                    ),
                                   )
                                 ],
                               ),
@@ -109,10 +135,16 @@ class _LoginState extends State<Login> {
                           ),
                           Container(
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  loginUSer();
+                                },
                                 child: Container(
                                   child: Center(
-                                    child: Text("LOGIN"),
+                                    child: _isLoading
+                                        ? CircularProgressIndicator(
+                                            strokeWidth: 1,
+                                          )
+                                        : Text("LOGIN"),
                                   ),
                                 )),
                           ),
@@ -132,5 +164,27 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future loginUSer() async {
+    if (_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+      Future.delayed(Duration(seconds: 2), () {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
+
+    var submittedData = json.encode({
+      "email": _userFormData['email'],
+      "password": _userFormData['password']
+    });
+
+    print(submittedData);
   }
 }
