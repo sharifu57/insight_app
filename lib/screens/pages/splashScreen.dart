@@ -35,10 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
           height: fullHeight,
           width: fullWidth,
           color: Color(0xff141463),
-          child: Image.asset(
-            'assets/logos/in1.png',
-            fit: BoxFit.contain,
-            width: MediaQuery.of(context).size.width / 10,
+          child: Container(
+            child: Image.asset(
+              'assets/logos/in1.png',
+              fit: BoxFit.contain,
+              width: MediaQuery.of(context).size.width / 4,
+            ),
           ),
         ),
       ),
