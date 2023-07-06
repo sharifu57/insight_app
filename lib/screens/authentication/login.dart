@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:insight_app/screens/authentication/register.dart';
+import 'package:insight_app/services/api.dart';
+import 'package:insight_app/services/config.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -127,7 +130,9 @@ class _LoginState extends State<Login> {
                           Container(
                             alignment: Alignment.centerLeft,
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _toRegisterPage();
+                                },
                                 child: Text("Forgot Password")),
                           ),
                           SizedBox(
@@ -151,7 +156,9 @@ class _LoginState extends State<Login> {
                           Container(
                             child: Center(
                               child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _toRegisterPage();
+                                  },
                                   child: Text("CREATE ACCOUNT")),
                             ),
                           )
@@ -166,7 +173,21 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future loginUSer() async {
+  Future _toRegisterPage() async {
+    setState(() {
+      Future.delayed(Duration(seconds: 2), () {
+        setState(() {
+          _isLoading = true;
+        });
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Register()),
+        );
+      });
+    });
+  }
+
+  Future<void> loginUSer() async {
     if (_formKey.currentState!.validate()) {
       return;
     }
@@ -186,5 +207,11 @@ class _LoginState extends State<Login> {
     });
 
     print(submittedData);
+
+    final endpoint = '${config['apiBaseUrl']}/login';
+    const method = 'POST';
+    final data = submittedData;
+
+    await sendRequest(context, endpoint, method, data);
   }
 }
