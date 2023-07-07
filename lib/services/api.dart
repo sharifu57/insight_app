@@ -11,7 +11,7 @@ Future sendPostRequest(BuildContext context, endpoint, dynamic data) async {
     final response = await dio.post(endpoint, data: data);
 
     if (response.data['status'] == 200) {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/screen');
     } else {
       ErrorDialog.showErrorDialog(context, response.data['message'].toString());
     }
