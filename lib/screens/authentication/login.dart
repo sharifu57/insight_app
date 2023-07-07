@@ -74,15 +74,17 @@ class _LoginState extends State<Login> {
                                       keyboardType: TextInputType.text,
                                       enableSuggestions: false,
                                       autocorrect: false,
-                                      validator: (email) {
-                                        if (email!.isEmpty ||
-                                            email?.length == 0) {
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                      validator: (username) {
+                                        if (username!.isEmpty ||
+                                            username?.length == 0) {
                                           return "invalid email or name";
                                         }
                                         return null;
                                       },
-                                      onSaved: (email) {
-                                        _userFormData['email'] = email;
+                                      onSaved: (username) {
+                                        _userFormData['username'] = username;
                                       },
                                     ),
                                   )
@@ -112,6 +114,8 @@ class _LoginState extends State<Login> {
                                               fontSize: 14)),
                                       keyboardType: TextInputType.text,
                                       obscureText: true,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
                                       validator: (password) {
                                         if (password!.isEmpty) {
                                           return "password is required";
@@ -141,7 +145,8 @@ class _LoginState extends State<Login> {
                           Container(
                             child: ElevatedButton(
                                 onPressed: () {
-                                  loginUSer();
+                                  print("------login");
+                                  loginUser();
                                 },
                                 child: Container(
                                   child: Center(
@@ -187,31 +192,32 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Future<void> loginUSer() async {
-    if (_formKey.currentState!.validate()) {
+  Future loginUser() async {
+    print("-----start");
+    if (!_formKey.currentState!.validate()) {
       return;
     }
+
     _formKey.currentState!.save();
+
     setState(() {
       _isLoading = true;
-      Future.delayed(Duration(seconds: 2), () {
-        setState(() {
-          _isLoading = false;
-        });
-      });
     });
 
-    var submittedData = json.encode({
-      "email": _userFormData['email'],
+    var submittedData = {
+      "username": _userFormData['username'],
       "password": _userFormData['password']
-    });
+    };
 
     print(submittedData);
 
     final endpoint = '${config['apiBaseUrl']}/login';
-    const method = 'POST';
-    final data = submittedData;
+    final data = json.encode(submittedData);
 
-    await sendRequest(context, endpoint, method, data);
+    await sendPostRequest(context, endpoint, data);
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

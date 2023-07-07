@@ -6,15 +6,14 @@ import 'package:insight_app/partials/errorMessage.dart';
 
 final Dio dio = Dio();
 
-Future<void> sendRequest(
-    BuildContext context, String endpoint, String method, dynamic data) async {
+Future sendPostRequest(BuildContext context, endpoint, dynamic data) async {
   try {
-    final response = await dio.request(endpoint,
-        options: Options(method: method), data: data);
-    print("------print response");
-    print(response);
-    if (response.statusCode != 201) {
-      ErrorDialog.showErrorDialog(context, response);
+    final response = await dio.post(endpoint, data: data);
+
+    if (response.data['status'] == 200) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ErrorDialog.showErrorDialog(context, response.data['message'].toString());
     }
   } catch (e) {
     print(e);
