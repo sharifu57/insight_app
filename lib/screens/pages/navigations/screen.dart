@@ -48,9 +48,7 @@ class _ScreenState extends State<Screen> {
           child: tabs.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: Container(
-            // padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             decoration: const BoxDecoration(
-              // borderRadius: BorderRadius.all(Radius.circular(40.0)),
               boxShadow: [
                 BoxShadow(
                     color: Colors.black12, spreadRadius: 0, blurRadius: 20),
@@ -58,46 +56,43 @@ class _ScreenState extends State<Screen> {
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(0.0)),
-              child: BottomNavigationBar(
-                //  type: BottomNavigationBarType.shifting,
-                unselectedItemColor: Colors.blue,
-                backgroundColor: Colors.red,
-                elevation: 10,
-                iconSize: 10,
+              child: Container(
+                color: Colors.orange,
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.shifting,
+                  elevation: 10,
+                  iconSize: 10,
 
-                selectedIconTheme: const IconThemeData(
-                    color: Color.fromARGB(255, 43, 4, 4), size: 15),
-                selectedItemColor: const Color(0xFF11101E),
-                mouseCursor: SystemMouseCursors.grab,
-                selectedLabelStyle:
-                    const TextStyle(fontWeight: FontWeight.w600),
-                unselectedIconTheme: const IconThemeData(
-                  color: Colors.black54,
+                  selectedIconTheme: const IconThemeData(
+                      color: Color.fromARGB(255, 43, 4, 4), size: 15),
+                  selectedItemColor: const Color(0xFF11101E),
+                  mouseCursor: SystemMouseCursors.grab,
+                  selectedLabelStyle: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 10),
+                  unselectedIconTheme: const IconThemeData(
+                    color: Colors.black54,
+                  ),
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: 'Discover',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.notifications_none),
+                      label: 'Alerts',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.mail_outline_rounded),
+                      label: 'Messages',
+                    ),
+                  ],
+                  currentIndex: _selectedIndex, //New
+                  onTap: _onItemTapped,
                 ),
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.share_location_sharp),
-                    label: 'Location',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.message_outlined),
-                    label: 'Messages',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: 'Settings',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: 'Settings',
-                  ),
-                ],
-                currentIndex: _selectedIndex, //New
-                onTap: _onItemTapped,
               ),
             )));
   }

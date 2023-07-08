@@ -60,14 +60,14 @@ class _LoginState extends State<Login> {
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "Email or Useraname",
+                                      "Useraname",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                   Container(
                                     child: TextFormField(
                                       decoration: InputDecoration(
-                                          hintText: "name@youremail.com",
+                                          hintText: "johnDoe",
                                           hintStyle: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.normal,
