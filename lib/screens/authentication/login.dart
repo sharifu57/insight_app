@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:insight_app/screens/authentication/register.dart';
 import 'package:insight_app/services/api.dart';
 import 'package:insight_app/services/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -214,7 +215,18 @@ class _LoginState extends State<Login> {
     final endpoint = '${config['apiBaseUrl']}/login';
     final data = json.encode(submittedData);
 
-    await sendPostRequest(context, endpoint, data);
+    var response = await sendPostRequest(context, endpoint, data);
+
+    // ignore: unnecessary_null_comparison
+    if (response != null) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String responseString = jsonEncode(response);
+      await pref.setString('user', responseString);
+
+      Navigator.restorablePushNamed(context, '/screen');
+    } else {
+      return null;
+    }
 
     setState(() {
       _isLoading = false;

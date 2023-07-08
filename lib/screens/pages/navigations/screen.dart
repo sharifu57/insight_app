@@ -48,9 +48,9 @@ class _ScreenState extends State<Screen> {
           child: tabs.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+            // padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(40.0)),
+              // borderRadius: BorderRadius.all(Radius.circular(40.0)),
               boxShadow: [
                 BoxShadow(
                     color: Colors.black12, spreadRadius: 0, blurRadius: 20),
@@ -60,13 +60,13 @@ class _ScreenState extends State<Screen> {
               borderRadius: const BorderRadius.all(Radius.circular(0.0)),
               child: BottomNavigationBar(
                 //  type: BottomNavigationBarType.shifting,
-                unselectedItemColor: Colors.black54,
-                backgroundColor: Colors.white,
+                unselectedItemColor: Colors.blue,
+                backgroundColor: Colors.red,
                 elevation: 10,
                 iconSize: 10,
 
-                selectedIconTheme:
-                    const IconThemeData(color: Color(0xff04172B), size: 15),
+                selectedIconTheme: const IconThemeData(
+                    color: Color.fromARGB(255, 43, 4, 4), size: 15),
                 selectedItemColor: const Color(0xFF11101E),
                 mouseCursor: SystemMouseCursors.grab,
                 selectedLabelStyle:

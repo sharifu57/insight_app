@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:insight_app/screens/authentication/login.dart';
+import 'package:insight_app/screens/pages/navigations/screen.dart';
+import 'package:insight_app/services/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,11 +18,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      // After 3 seconds, navigate to the next page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
+      checkUser().then((hasUser) {
+        if (hasUser) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Screen()));
+        } else {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Login()));
+        }
+      });
     });
   }
 

@@ -4,18 +4,19 @@ import 'dart:core';
 
 import 'package:insight_app/partials/errorMessage.dart';
 
-final Dio dio = Dio();
-
 Future sendPostRequest(BuildContext context, endpoint, dynamic data) async {
   try {
-    final response = await dio.post(endpoint, data: data);
-
-    if (response.data['status'] == 200) {
-      Navigator.pushReplacementNamed(context, '/screen');
-    } else {
-      ErrorDialog.showErrorDialog(context, response.data['message'].toString());
+    final response = await Dio().post(endpoint, data: data);
+    print(response);
+    if (response != null) {
+      if (response.data['status'] != 200) {
+        ErrorDialog.showErrorDialog(
+            context, response.data['message'].toString());
+      }
+      return response.data;
     }
   } catch (e) {
     print(e);
+    return null;
   }
 }
