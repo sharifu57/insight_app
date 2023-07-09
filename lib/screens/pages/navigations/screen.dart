@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insight_app/screens/pages/navigations/home.dart';
-import 'package:insight_app/screens/pages/navigations/inbox.dart';
+import 'package:insight_app/screens/pages/navigations/profile.dart';
 import 'package:insight_app/screens/pages/navigations/search.dart';
-import 'package:insight_app/screens/pages/navigations/space.dart';
+import 'package:insight_app/screens/pages/navigations/insight.dart';
 import 'package:insight_app/screens/pages/navigations/notification.dart';
 
 class Screen extends StatefulWidget {
@@ -33,13 +33,13 @@ class _ScreenState extends State<Screen> {
       ),
       Center(child: Search()),
       Center(
-        child: Space(),
+        child: Insight(),
       ),
       Center(
         child: Notify(),
       ),
       Center(
-        child: Inbox(),
+        child: Profile(),
       )
     ];
 
@@ -82,12 +82,16 @@ class _ScreenState extends State<Screen> {
                       label: 'Discover',
                     ),
                     BottomNavigationBarItem(
+                      icon: Icon(Icons.file_present_sharp),
+                      label: 'Add',
+                    ),
+                    BottomNavigationBarItem(
                       icon: Icon(Icons.notifications_none),
                       label: 'Alerts',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.mail_outline_rounded),
-                      label: 'Messages',
+                      icon: Icon(Icons.person_4_outlined),
+                      label: 'Profile',
                     ),
                   ],
                   currentIndex: _selectedIndex, //New

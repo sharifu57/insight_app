@@ -14,23 +14,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(
-              child: Image.asset(
-            'assets/logos/in1.png',
-            fit: BoxFit.contain,
-            width: MediaQuery.of(context).size.width / 10,
-          )),
-          actions: <Widget>[
-            TextButton(onPressed: () {}, child: Text(''))
-          ], //<Widget>[]
-          backgroundColor: Color.fromARGB(255, 1, 1, 48),
-          elevation: 50.0,
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: 'Menu Icon',
-            onPressed: () {},
-          ),
-        ),
+            title: Center(
+                child: Image.asset(
+              'assets/logos/in1.png',
+              fit: BoxFit.contain,
+              width: MediaQuery.of(context).size.width / 10,
+            )),
+            actions: <Widget>[
+              TextButton(onPressed: () {}, child: Text(''))
+            ], //<Widget>[]
+            backgroundColor: Color.fromARGB(255, 1, 1, 48),
+            elevation: 0,
+            leading: Container()),
         body: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -45,9 +40,8 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    String? user = snapshot.data ??
-                        ''; // Retrieve the user data from the snapshot
-                    return Text(user ?? '');
+                    String? user = snapshot.data ?? '';
+                    return Text(user);
                   }
                 }
               },

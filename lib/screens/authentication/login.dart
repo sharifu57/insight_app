@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
 
   Future _toRegisterPage() async {
     setState(() {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 0), () {
         setState(() {
           _isLoading = true;
         });
@@ -194,7 +194,6 @@ class _LoginState extends State<Login> {
   }
 
   Future loginUser() async {
-    print("-----start");
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -218,12 +217,16 @@ class _LoginState extends State<Login> {
     var response = await sendPostRequest(context, endpoint, data);
 
     // ignore: unnecessary_null_comparison
-    if (response != null) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      String responseString = jsonEncode(response);
-      await pref.setString('user', responseString);
 
-      Navigator.restorablePushNamed(context, '/screen');
+    if (response != null) {
+      if (response['status'] == 200) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        String responseString = jsonEncode(response);
+        await pref.setString('user', responseString);
+
+        Navigator.restorablePushNamed(context, '/screen');
+      } else {
+      }
     } else {
       return null;
     }
