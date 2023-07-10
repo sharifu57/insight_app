@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       checkUser().then((hasUser) {
         if (hasUser != null) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Login()));
+              context, MaterialPageRoute(builder: (context) => Screen()));
         } else {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Login()));
@@ -37,16 +37,40 @@ class _SplashScreenState extends State<SplashScreen> {
     double fullHeight = height;
 
     return Scaffold(
-      body: Container(
-        color: Color.fromARGB(255, 1, 1, 48),
-        height: fullHeight,
-        width: double.infinity,
-        child: Image.asset(
-          'assets/logos/in1.png',
-          fit: BoxFit.contain,
-          width: double.infinity / 10,
+      backgroundColor: Color.fromARGB(255, 1, 1, 48),
+      body: SafeArea(
+          child: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              Expanded(
+                  child: Container(
+                child: Center(
+                  child: Image.asset(
+                    'assets/logos/in1.png',
+                    fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width / 2.4,
+                  ),
+                ),
+              )),
+              Center(
+                child: Column(
+                  children: [
+                    Container(
+                        child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 1,
+                    )),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+      )),
     );
+    
   }
 }

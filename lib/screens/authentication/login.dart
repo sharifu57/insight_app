@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
-          color: Color.fromARGB(255, 1, 1, 48),
+          color: Color(0xFF010130),
           child: Column(
             children: [
               SizedBox(
