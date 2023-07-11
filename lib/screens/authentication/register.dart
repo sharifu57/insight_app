@@ -299,8 +299,6 @@ class _RegisterState extends State<Register> {
       "password": _userFormData['password']
     };
 
-    print(userData);
-
     final endpoint = '${config['apiBaseUrl']}/register';
     final data = json.encode(userData);
 

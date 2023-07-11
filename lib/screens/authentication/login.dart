@@ -222,6 +222,8 @@ class _LoginState extends State<Login> {
       if (response['status'] == 200) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         String responseString = jsonEncode(response);
+        print("_________user response");
+        print(responseString);
         await pref.setString('user', responseString);
 
         Navigator.restorablePushNamed(context, '/screen');

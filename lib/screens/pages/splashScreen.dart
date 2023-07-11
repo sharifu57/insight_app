@@ -59,6 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Column(
                   children: [
                     Container(
+                      padding: EdgeInsets.only(bottom: 20),
                         child: CircularProgressIndicator(
                       color: Colors.white,
                       strokeWidth: 1,

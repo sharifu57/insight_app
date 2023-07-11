@@ -8,6 +8,7 @@ Future sendPostRequest(BuildContext context, endpoint, dynamic data) async {
   try {
     final response = await Dio().post(endpoint, data: data);
 
+    print("_______print response ${response}",);
     if (response.data['status'] != 200 || response.data['status'] != 201) {
       ErrorDialog.showErrorDialog(context, response.data['message'].toString());
     }
@@ -17,13 +18,12 @@ Future sendPostRequest(BuildContext context, endpoint, dynamic data) async {
   }
 }
 
-Future getRequest(BuildContext context, endpoint) async {
+
+Future getRequest(String endpoint) async {
   try {
     final response = await Dio().get(endpoint);
-    print("_____start print");
-    print(response);
-    print("______end print");
-    return response.data;
+    
+    return response;
   } catch (e) {
     print(e);
   }
