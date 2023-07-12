@@ -221,14 +221,17 @@ class _LoginState extends State<Login> {
     if (response != null) {
       if (response['status'] == 200) {
         SharedPreferences pref = await SharedPreferences.getInstance();
-        String responseString = jsonEncode(response);
+        String data = jsonEncode(response);
         print("_________user response");
-        print(responseString);
-        await pref.setString('user', responseString);
+        await pref.setString('user', data);
+        await pref.setString('_accessToken', response?['accessToken']);
+        await pref.setString('_first_name', response?['user']['first_name']);
+        await pref.setString('_last_name', response?['user']['last_name']);
+        await pref.setString('_username', response?['user']['username']);
+        await pref.setInt('_userId', response?['user']['id']);
 
         Navigator.restorablePushNamed(context, '/screen');
-      } else {
-      }
+      } else {}
     } else {
       return null;
     }

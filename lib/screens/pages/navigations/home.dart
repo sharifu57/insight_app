@@ -100,8 +100,8 @@ class _HomePageState extends State<HomePage> {
                                           borderRadius:
                                               BorderRadius.circular(70),
                                           child: Container(
-                                            child: posts[index]['author']
-                                                        ['image'] ==
+                                            child: posts[index]['user']
+                                                        ?['profile']['image'] ==
                                                     null
                                                 ? Container(
                                                     child: Center(
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   )
                                                 : Image.network(
-                                                    '$path${posts[index]['author']['image']}',
+                                                    '$path${posts[index]['user']?['profile']['image']}',
                                                     fit: BoxFit.cover,
                                                     height:
                                                         MediaQuery.of(context)
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      "${posts[index]['author']['user']['username']}",
+                                                      "${posts[index]['user']?['username']}",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -156,14 +156,14 @@ class _HomePageState extends State<HomePage> {
                                                       child: Row(
                                                         children: [
                                                           Text(
-                                                            "${posts[index]['author']['user']['first_name']}",
+                                                            "${posts[index]['user']?['first_name']}",
                                                             style: TextStyle(
                                                                 color: Color(
                                                                     0xFF444444),
                                                                 fontSize: 12),
                                                           ),
                                                           Text(
-                                                              "${posts[index]['author']['user']['last_name']}",
+                                                              "${posts[index]['user']?['last_name']}",
                                                               style: TextStyle(
                                                                   color: Color
                                                                       .fromARGB(
@@ -201,13 +201,43 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           Container(
                                             alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "${posts[index]['content']}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w200,
-                                                  fontSize: 12),
-                                            ),
+                                            child: posts[index]['attachment'] ==
+                                                    null
+                                                ? Text(
+                                                    "${posts[index]['content']}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w200,
+                                                        fontSize: 12),
+                                                  )
+                                                : Column(
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.only(bottom: 10),
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text(
+                                                    "${posts[index]['content']}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w200,
+                                                        fontSize: 12),
+                                                  ),
+                                                      ),
+                                                      Container(
+                                                        child: Image.network(
+                                                          '$path${posts[index]['attachment']}',
+                                                          fit: BoxFit.cover,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height/3,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                           ),
                                         ],
                                       ),
