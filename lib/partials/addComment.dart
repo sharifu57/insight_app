@@ -1,18 +1,25 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:insight_app/screens/pages/navigations/screen.dart';
+import 'package:insight_app/services/api.dart';
 import 'package:insight_app/services/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddComment extends StatefulWidget {
-  final String postID;
+
   final String postUsername;
   final String postFirstName;
   final String postLastName;
   final String postImage;
+  final String postID;
   AddComment(
-      {required this.postID,
+      {
       required this.postUsername,
       required this.postFirstName,
       required this.postLastName,
-      required this.postImage});
+      required this.postImage, required this.postID});
 
   @override
   State<AddComment> createState() => _AddCommentState();
@@ -28,6 +35,9 @@ class _AddCommentState extends State<AddComment> {
   void initState() {
     super.initState();
     _focusNode.requestFocus();
+    getUser();
+    print("______________post id");
+    print(postID);
   }
 
   @override
@@ -40,9 +50,7 @@ class _AddCommentState extends State<AddComment> {
   Widget build(BuildContext context) {
     double fullHeight = MediaQuery.of(context).size.height;
     double fullWidht = MediaQuery.of(context).size.width;
-    // return Container(
-    //   child: Text(widget.postID),
-    // );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 1, 1, 48),
@@ -55,7 +63,13 @@ class _AddCommentState extends State<AddComment> {
               Icons.cancel,
               color: Colors.white,
             )),
-        actions: [TextButton(onPressed: () {}, child: Text("Reply"))],
+        actions: [
+          TextButton(
+              onPressed: () {
+                addComment();
+              },
+              child: Text("Reply"))
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -115,32 +129,36 @@ class _AddCommentState extends State<AddComment> {
                             )
                           ],
                         ),
-                        Container(
-                          child: TextFormField(
-                            focusNode: _focusNode,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'add your comment',
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w100,
-                                )),
-                            minLines: 2,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            style: TextStyle(
-                                color: const Color.fromARGB(255, 250, 250, 250),
-                                fontSize: 12),
-                            validator: (content) {
-                              if (content!.isEmpty) {
-                                return "write something";
-                              }
-                              return null;
-                            },
-                            onSaved: (content) {
-                              _postData['content'] = content.toString();
-                            },
+                        Form(
+                          key: _commentKey,
+                          child: Container(
+                            child: TextFormField(
+                              focusNode: _focusNode,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'add your comment',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w100,
+                                  )),
+                              minLines: 2,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              style: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 250, 250, 250),
+                                  fontSize: 12),
+                              validator: (content) {
+                                if (content!.isEmpty) {
+                                  return "can not be blank";
+                                }
+                                return null;
+                              },
+                              onSaved: (content) {
+                                _postData['content'] = content;
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -153,5 +171,55 @@ class _AddCommentState extends State<AddComment> {
         ),
       ),
     );
+  }
+
+  int? _userId;
+  String? _postId;
+
+  Future<void> getUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final String? _user = prefs.getString('user');
+    final String? accessToken = prefs.getString("_accessToken");
+    int? userId = prefs.getInt("_userId");
+
+    setState(() {
+      _userId = userId;
+      _postId = postID;
+    });
+  }
+
+  Future addComment() async {
+    if (!_commentKey.currentState!.validate()) {
+      return;
+    }
+
+    _commentKey.currentState!.save();
+
+    var commentPayload = {
+      "user": _userId,
+      "post": widget.postID,
+      "content": _postData['content'],
+    };
+
+    final endpoint = '${config['apiBaseUrl']}/add_comment';
+    final data = json.encode(commentPayload);
+
+    var response = await sendPostRequest(context, endpoint, data);
+    
+    setState(() {
+      Future.delayed(Duration(seconds: 1), () {
+        final snackBar = SnackBar(
+          content: Text('${response['message']}'),
+          backgroundColor: Colors.blue,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Screen()),
+        );
+      });
+    });
   }
 }

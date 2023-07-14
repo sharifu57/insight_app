@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:insight_app/partials/addComment.dart';
+import 'package:insight_app/partials/viewPost.dart';
 import 'package:insight_app/services/api.dart';
 import 'package:insight_app/services/config.dart';
 import 'package:insight_app/services/storage.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final endpoint = '${config['apiBaseUrl']}/posts';
+  final url = '${config['apiBaseUrl']}/commets_by_post';
   List posts = [];
   Future getPosts() async {
     final response = await getRequest(endpoint);
@@ -202,6 +204,16 @@ class _HomePageState extends State<HomePage> {
                                             alignment: Alignment.centerLeft,
                                             child: InkWell(
                                               onTap: () {
+                                                // viewOnePost(
+                                                //     posts[index]?['id']);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => ViewPost(
+                                                            post:
+                                                                '${posts[index]}',
+                                                            postId:
+                                                                '${posts[index]?['id']}')));
                                               },
                                               child: posts[index]
                                                           ['attachment'] ==
@@ -253,97 +265,122 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                            width: fullWidth,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    print(
+                                                        "${posts[index]['id']}");
+                                                    print(
+                                                        '${posts[index]['user']['profile']['image']}');
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    AddComment(
+                                                                      postImage:
+                                                                          '${posts[index]['user']['profile']['image']}',
+                                                                      postID:
+                                                                          '${posts[index]['id']}',
+                                                                      postUsername:
+                                                                          '${posts[index]['user']['username']}',
+                                                                      postFirstName:
+                                                                          '${posts[index]['user']['first_name']}',
+                                                                      postLastName:
+                                                                          '${posts[index]['user']['last_name']}',
+                                                                    )));
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.chat,
+                                                        size: 17,
+                                                        color: Colors.grey,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                "${posts[index]['comment']?.length}",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            5),
+                                                                child: Text(
+                                                                  "Comments",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                              Icons
+                                                                  .heart_broken,
+                                                              size: 17)),
+                                                      Text(
+                                                        " 20 likes",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.share,
+                                                            size: 17,
+                                                          )),
+                                                      Text(
+                                                        " 20 likes",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ))
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            width: fullWidth,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    print("comments");
-                                    print('${posts[index]['user']['profile']['image']}');
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AddComment(
-                                                  postImage:
-                                                      '${posts[index]['user']['profile']['image']}',
-                                                  postID:
-                                                      '${posts[index]['id']}',
-                                                  postUsername:
-                                                      '${posts[index]['user']['username']}',
-                                                  postFirstName:
-                                                      '${posts[index]['user']['first_name']}',
-                                                  postLastName:
-                                                      '${posts[index]['user']['last_name']}',
-                                                )));
-                                  },
-                                  child: Row(
-                                    children: [
-                                      // IconButton(
-                                      //     onPressed: () {
-                                      //       print("_____post id");
-                                      //       print("${posts[index]['id']}");
-                                      //     },
-                                      //     icon: Icon(Icons.chat, size: 17,)),
-                                      Icon(
-                                        Icons.chat,
-                                        size: 17,
-                                        color: Colors.grey,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          " 20 comments",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.heart_broken,
-                                              size: 17)),
-                                      Text(
-                                        " 20 likes",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.share,
-                                            size: 17,
-                                          )),
-                                      Text(
-                                        " 20 likes",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                )
                               ],
                             ),
                           ),
