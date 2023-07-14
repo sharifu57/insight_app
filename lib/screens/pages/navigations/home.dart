@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insight_app/partials/addComment.dart';
 import 'package:insight_app/services/api.dart';
 import 'package:insight_app/services/config.dart';
 import 'package:insight_app/services/storage.dart';
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double fullWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
             title: Center(
@@ -101,9 +103,11 @@ class _HomePageState extends State<HomePage> {
                                               BorderRadius.circular(70),
                                           child: Container(
                                             child: posts[index]['user']
-                                                        ?['profile']['image'] ==
+                                                            ?['profile']
+                                                        ?['image'] ==
                                                     null
                                                 ? Container(
+                                                    color: Colors.red,
                                                     child: Center(
                                                       child: Text("N"),
                                                     ),
@@ -178,66 +182,76 @@ class _HomePageState extends State<HomePage> {
                                                     )
                                                   ],
                                                 ),
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Container(),
-                                                      Container(
-                                                        child: IconButton(
-                                                            onPressed: () {},
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .keyboard_control_rounded,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 13,
-                                                            )),
-                                                      )
-                                                    ],
-                                                  ),
+                                                Row(
+                                                  children: [
+                                                    Container(),
+                                                    IconButton(
+                                                        onPressed: () {},
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .keyboard_control_rounded,
+                                                          color: Colors.white,
+                                                          size: 13,
+                                                        ))
+                                                  ],
                                                 )
                                               ],
                                             ),
                                           ),
                                           Container(
                                             alignment: Alignment.centerLeft,
-                                            child: posts[index]['attachment'] ==
-                                                    null
-                                                ? Text(
-                                                    "${posts[index]['content']}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w200,
-                                                        fontSize: 12),
-                                                  )
-                                                : Column(
-                                                    children: [
-                                                      Container(
-                                                        padding: EdgeInsets.only(bottom: 10),
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Text(
-                                                    "${posts[index]['content']}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w200,
-                                                        fontSize: 12),
-                                                  ),
-                                                      ),
-                                                      Container(
-                                                        child: Image.network(
-                                                          '$path${posts[index]['attachment']}',
-                                                          fit: BoxFit.cover,
-                                                          width: MediaQuery.of(context).size.width,
-                                                          height: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height/3,
+                                            child: InkWell(
+                                              onTap: () {
+                                              },
+                                              child: posts[index]
+                                                          ['attachment'] ==
+                                                      null
+                                                  ? Text(
+                                                      "${posts[index]['content']}",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 12),
+                                                    )
+                                                  : Column(
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10),
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            "${posts[index]['content']}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w200,
+                                                                fontSize: 12),
+                                                          ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                        Container(
+                                                          child: Image.network(
+                                                            '$path${posts[index]['attachment']}',
+                                                            fit: BoxFit.cover,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                3,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -246,7 +260,92 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 30,
+                          ),
+                          Container(
+                            width: fullWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    print("comments");
+                                    print('${posts[index]['user']['profile']['image']}');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddComment(
+                                                  postImage:
+                                                      '${posts[index]['user']['profile']['image']}',
+                                                  postID:
+                                                      '${posts[index]['id']}',
+                                                  postUsername:
+                                                      '${posts[index]['user']['username']}',
+                                                  postFirstName:
+                                                      '${posts[index]['user']['first_name']}',
+                                                  postLastName:
+                                                      '${posts[index]['user']['last_name']}',
+                                                )));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      // IconButton(
+                                      //     onPressed: () {
+                                      //       print("_____post id");
+                                      //       print("${posts[index]['id']}");
+                                      //     },
+                                      //     icon: Icon(Icons.chat, size: 17,)),
+                                      Icon(
+                                        Icons.chat,
+                                        size: 17,
+                                        color: Colors.grey,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          " 20 comments",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.heart_broken,
+                                              size: 17)),
+                                      Text(
+                                        " 20 likes",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.share,
+                                            size: 17,
+                                          )),
+                                      Text(
+                                        " 20 likes",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           Divider(
                             color: Color(0xFF444444),

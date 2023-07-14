@@ -219,7 +219,7 @@ class _LoginState extends State<Login> {
     // ignore: unnecessary_null_comparison
 
     if (response != null) {
-      if (response['status'] == 200) {
+      if (response['status'] == 201) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         String data = jsonEncode(response);
         print("_________user response");
