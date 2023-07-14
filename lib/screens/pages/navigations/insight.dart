@@ -10,8 +10,6 @@ class Insight extends StatefulWidget {
 }
 
 class _InsightState extends State<Insight> {
-  
-
   @override
   void initState() {
     // TODO: implement
@@ -19,10 +17,7 @@ class _InsightState extends State<Insight> {
     getUser();
     print("____get user");
     print(getUser());
-    setState(() {
-      
-    });
-
+    setState(() {});
   }
 
   @override
@@ -52,13 +47,25 @@ class _InsightState extends State<Insight> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 20),
-                child: FutureBuilder(builder:
-                    (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("");
-                  } else {}
-                  return Container();
-                }),
+                child: FutureBuilder<String?>(
+                  future: checkUser(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        String? user = snapshot.data ?? '';
+                        return Text(
+                          user,
+                          style: TextStyle(color: Colors.white),
+                        );
+                      }
+                    }
+                  },
+                ),
               )
             ],
           ),
