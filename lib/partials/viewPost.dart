@@ -4,7 +4,7 @@ import 'package:insight_app/services/config.dart';
 
 class ViewPost extends StatefulWidget {
   final String? postId;
-  final Post post;
+  final String? post;
   const ViewPost({super.key, required this.postId, required this.post});
 
   @override

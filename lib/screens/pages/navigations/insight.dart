@@ -22,6 +22,7 @@ class _InsightState extends State<Insight> {
   String? _username;
   int? _userId;
   FocusNode _focusNode = FocusNode();
+  
   @override
   void initState() {
     super.initState();
@@ -46,8 +47,6 @@ class _InsightState extends State<Insight> {
     setState(() {
       _username = username;
       _userId = userId;
-      print("_____username");
-      print(_username);
     });
   }
 
