@@ -8,18 +8,17 @@ import 'package:insight_app/services/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddComment extends StatefulWidget {
-
   final String postUsername;
   final String postFirstName;
   final String postLastName;
   final String postImage;
   final String postID;
   AddComment(
-      {
-      required this.postUsername,
+      {required this.postUsername,
       required this.postFirstName,
       required this.postLastName,
-      required this.postImage, required this.postID});
+      required this.postImage,
+      required this.postID});
 
   @override
   State<AddComment> createState() => _AddCommentState();
@@ -202,11 +201,14 @@ class _AddCommentState extends State<AddComment> {
       "content": _postData['content'],
     };
 
+    print("______view comment");
+    print(commentPayload);
+    print("______end print comment");
     final endpoint = '${config['apiBaseUrl']}/add_comment';
     final data = json.encode(commentPayload);
 
     var response = await sendPostRequest(context, endpoint, data);
-    
+
     setState(() {
       Future.delayed(Duration(seconds: 1), () {
         final snackBar = SnackBar(

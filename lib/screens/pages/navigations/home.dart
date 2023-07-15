@@ -213,11 +213,13 @@ class _HomePageState extends State<HomePage> {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => ViewPost(
-                                                            post:
-                                                                '${posts[index]}',
-                                                            postId:
-                                                                '${posts[index]?['id']}')));
+                                                        builder: (context) =>
+                                                            ViewPost(
+                                                              post:
+                                                                  posts[index],
+                                                              // postId:
+                                                              //     '${posts[index]?['id']}'
+                                                            )));
                                               },
                                               child: posts[index]
                                                           ['attachment'] ==
@@ -276,11 +278,9 @@ class _HomePageState extends State<HomePage> {
                                             width: fullWidth,
                                             child: SingleChildScrollView(
                                               child: Row(
-                                                
                                                 children: [
                                                   InkWell(
                                                     onTap: () {
-                                                      
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
@@ -351,7 +351,8 @@ class _HomePageState extends State<HomePage> {
                                                         Text(
                                                           " 20 likes",
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 12),
                                                         ),
                                                       ],
@@ -369,7 +370,8 @@ class _HomePageState extends State<HomePage> {
                                                         Text(
                                                           " 20 likes",
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 12),
                                                         ),
                                                       ],
