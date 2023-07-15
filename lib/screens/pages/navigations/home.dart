@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insight_app/partials/addComment.dart';
+import 'package:insight_app/partials/viewPost.dart';
 import 'package:insight_app/services/api.dart';
 import 'package:insight_app/services/config.dart';
 import 'package:insight_app/services/storage.dart';
@@ -13,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final endpoint = '${config['apiBaseUrl']}/posts';
+  final url = '${config['apiBaseUrl']}/commets_by_post';
   List posts = [];
   Future getPosts() async {
     final response = await getRequest(endpoint);
@@ -32,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double fullWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
             title: Center(
@@ -100,16 +104,18 @@ class _HomePageState extends State<HomePage> {
                                           borderRadius:
                                               BorderRadius.circular(70),
                                           child: Container(
-                                            child: posts[index]['author']
-                                                        ['image'] ==
+                                            child: posts[index]['user']
+                                                            ?['profile']
+                                                        ?['image'] ==
                                                     null
                                                 ? Container(
+                                                    color: Colors.red,
                                                     child: Center(
                                                       child: Text("N"),
                                                     ),
                                                   )
                                                 : Image.network(
-                                                    '$path${posts[index]['author']['image']}',
+                                                    '$path${posts[index]['user']?['profile']['image']}',
                                                     fit: BoxFit.cover,
                                                     height:
                                                         MediaQuery.of(context)
@@ -136,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      "${posts[index]['author']['user']['username']}",
+                                                      "${posts[index]['user']?['username']}",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -156,14 +162,14 @@ class _HomePageState extends State<HomePage> {
                                                       child: Row(
                                                         children: [
                                                           Text(
-                                                            "${posts[index]['author']['user']['first_name']}",
+                                                            "${posts[index]['user']?['first_name']}",
                                                             style: TextStyle(
                                                                 color: Color(
                                                                     0xFF444444),
                                                                 fontSize: 12),
                                                           ),
                                                           Text(
-                                                              "${posts[index]['author']['user']['last_name']}",
+                                                              "${posts[index]['user']?['last_name']}",
                                                               style: TextStyle(
                                                                   color: Color
                                                                       .fromARGB(
@@ -178,35 +184,198 @@ class _HomePageState extends State<HomePage> {
                                                     )
                                                   ],
                                                 ),
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Container(),
-                                                      Container(
-                                                        child: IconButton(
-                                                            onPressed: () {},
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .keyboard_control_rounded,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 13,
-                                                            )),
-                                                      )
-                                                    ],
-                                                  ),
+                                                Row(
+                                                  children: [
+                                                    Container(),
+                                                    IconButton(
+                                                        onPressed: () {},
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .keyboard_control_rounded,
+                                                          color: Colors.white,
+                                                          size: 13,
+                                                        ))
+                                                  ],
                                                 )
                                               ],
                                             ),
                                           ),
                                           Container(
                                             alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "${posts[index]['content']}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w200,
-                                                  fontSize: 12),
+                                            child: InkWell(
+                                              onTap: () {
+                                                // viewOnePost(
+                                                //     posts[index]?['id']);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => ViewPost(
+                                                            post:
+                                                                '${posts[index]}',
+                                                            postId:
+                                                                '${posts[index]?['id']}')));
+                                              },
+                                              child: posts[index]
+                                                          ['attachment'] ==
+                                                      null
+                                                  ? Text(
+                                                      "${posts[index]['content']}",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 12),
+                                                    )
+                                                  : Column(
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10),
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            "${posts[index]['content']}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w200,
+                                                                fontSize: 12),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Image.network(
+                                                            '$path${posts[index]['attachment']}',
+                                                            fit: BoxFit.cover,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                3,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                            width: fullWidth,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    print(
+                                                        "${posts[index]['id']}");
+                                                    print(
+                                                        '${posts[index]['user']['profile']['image']}');
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    AddComment(
+                                                                      postImage:
+                                                                          '${posts[index]['user']['profile']['image']}',
+                                                                      postID:
+                                                                          '${posts[index]['id']}',
+                                                                      postUsername:
+                                                                          '${posts[index]['user']['username']}',
+                                                                      postFirstName:
+                                                                          '${posts[index]['user']['first_name']}',
+                                                                      postLastName:
+                                                                          '${posts[index]['user']['last_name']}',
+                                                                    )));
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.chat,
+                                                        size: 17,
+                                                        color: Colors.grey,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                "${posts[index]['comment']?.length}",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            5),
+                                                                child: Text(
+                                                                  "Comments",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                              Icons
+                                                                  .heart_broken,
+                                                              size: 17)),
+                                                      Text(
+                                                        " 20 likes",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.share,
+                                                            size: 17,
+                                                          )),
+                                                      Text(
+                                                        " 20 likes",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ],
@@ -214,9 +383,6 @@ class _HomePageState extends State<HomePage> {
                                     ))
                               ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
                           ),
                           Divider(
                             color: Color(0xFF444444),
