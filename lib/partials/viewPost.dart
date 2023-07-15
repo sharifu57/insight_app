@@ -15,8 +15,6 @@ class _ViewPostState extends State<ViewPost> {
   Future viewOnePost(int? postId) async {
     final api = '${config['apiBaseUrl']}/post/$postId';
     final response = await getRequest(api);
-    print("_______this post");
-    print(response);
   }
 
   @override
@@ -51,9 +49,6 @@ class _ViewPostState extends State<ViewPost> {
         child: Container(
           height: fullHeight,
           color: Color(0xFF010130),
-          // child: Center(
-          //   child: Text("${widget.post}")
-          // ),
           child: Column(
             children: [
               Container(
@@ -65,8 +60,12 @@ class _ViewPostState extends State<ViewPost> {
                   ],
                 ),
               ),
-              Expanded(child: Container(
-                child: Text("${widget.post}", style: TextStyle(color: Colors.white),),
+              Expanded(
+                  child: Container(
+                child: Text(
+                  "${widget.post}",
+                  style: TextStyle(color: Colors.white),
+                ),
               ))
             ],
           ),
