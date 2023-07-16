@@ -28,6 +28,8 @@ class _InsightState extends State<Insight> {
     super.initState();
     _focusNode.requestFocus();
     getUser();
+
+    print("_____user id ${_userId}");
   }
 
   @override

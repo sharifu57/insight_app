@@ -17,15 +17,17 @@ class _ProfileState extends State<Profile> {
   String? _username;
   String? _first_name;
   String? _last_name;
+  String? _bio;
+  int? _passion;
+  String? _location;
+  String? _dob;
+  String? _joined;
 
   @override
   void initState() {
     super.initState();
     getUser();
-    // getUserFromLocalStorage();
   }
-
-  // User user =  getUserFromLocalStorage();
 
   Future<void> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -34,28 +36,25 @@ class _ProfileState extends State<Profile> {
     String? username = prefs.getString("_username");
     String? firstName = prefs.getString("_first_name");
     String? lastname = prefs.getString("_last_name");
+    String? bio = prefs.getString("_bio");
+    int? passion = prefs.getInt("_passion");
+    String? location = prefs.getString("_location");
+    String? dob = prefs.getString("_dob");
+    String? joined = prefs.getString("_created");
+
     // int? userId = prefs.getInt("_userId");
 
     setState(() {
       _username = username;
       _first_name = firstName;
       _last_name = lastname;
+      _bio = bio;
+      _passion = passion;
+      _location = location;
+      _dob = dob;
+      _joined = joined;
     });
   }
-
-  // Future<User> getUserFromLocalStorage() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? userJson = prefs.getString('user');
-
-  //   if (userJson != null){
-  //     Map<String, dynamic>userMap = json.decode(userJson);
-  //     User user = User.fromJson(userMap);
-  //     return user;
-  //   }
-  //   else{
-  //     return null;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,6 @@ class _ProfileState extends State<Profile> {
           child: Column(
             children: [
               Container(
-                
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -105,7 +103,10 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("Profile Image", style: TextStyle(color: Colors.white),),
+                            child: Text(
+                              "Profile Image",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                           Row(
                             children: [
@@ -130,23 +131,6 @@ class _ProfileState extends State<Profile> {
                               )
                             ],
                           ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: [
-                                Text(
-                                  "@",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                ),
-                                Text(
-                                  "${_username}",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                )
-                              ],
-                            ),
-                          )
                         ],
                       ),
                     ),
@@ -156,10 +140,10 @@ class _ProfileState extends State<Profile> {
                           side: MaterialStateProperty.all<BorderSide>(
                             BorderSide(color: Colors.white, width: 1),
                           ),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(AppColors.primaryColor),
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(AppColors.secondaryColor),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppColors.primaryColor),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              AppColors.secondaryColor),
                           textStyle: MaterialStateProperty.all<TextStyle>(
                             TextStyle(fontSize: 10),
                           ),
@@ -171,10 +155,117 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              // Container(
-              //   padding: EdgeInsets.only(top: 20),
-              //   child: Text("${userId}"),
-              // )
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    Text(
+                      "@",
+                      style: TextStyle(color: Colors.grey, fontSize: 10),
+                    ),
+                    Text(
+                      "${_username}",
+                      style: TextStyle(color: Colors.grey, fontSize: 10),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  "${_bio}",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.badge,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      child: _passion == 1
+                          ? Text("Marketing",
+                              style: TextStyle(color: Colors.grey))
+                          : _passion == 2
+                              ? Text(
+                                  "Science and Technology",
+                                  style: TextStyle(color: Colors.grey),
+                                )
+                              : _passion == 3
+                                  ? Text("Sports",
+                                      style: TextStyle(color: Colors.grey))
+                                  : _passion == 4
+                                      ? Text("Sex and Life",
+                                          style: TextStyle(color: Colors.grey))
+                                      : Text(" "),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.pin,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "${_location}",
+                          style: TextStyle(color: Colors.grey),
+                        ))
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.date_range,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "Born ${_dob}",
+                          style: TextStyle(color: Colors.grey),
+                        ))
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Container(
+                        child: Text("Joined:",
+                            style: TextStyle(color: Colors.grey))),
+                    Container(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "${_joined}",
+                          style: TextStyle(color: Colors.grey),
+                        ))
+                  ],
+                ),
+              )
             ],
           ),
         ),

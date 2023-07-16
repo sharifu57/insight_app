@@ -229,6 +229,15 @@ class _LoginState extends State<Login> {
         await pref.setString('_last_name', response?['user']['last_name']);
         await pref.setString('_username', response?['user']['username']);
         await pref.setInt('_userId', response?['user']['id']);
+        // profile store
+        await pref.setString("_bio", response?['profile']['bio']);
+        await pref.setInt("_passion", response?['profile']['passion']);
+        await pref.setString("_location", response?['profile']['location']);
+        await pref.setString("_dob", response?['profile']['dob']);
+        await pref.setString("_phone", response?['profile']['phone']);
+        await pref.setString("_image", response?['profile']['image']);
+        await pref.setString("_cover", response?['profile']['cover']);
+        await pref.setString("_created", response?['profile']['created']);
 
         Navigator.restorablePushNamed(context, '/screen');
       } else {}
