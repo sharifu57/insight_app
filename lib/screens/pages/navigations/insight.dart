@@ -22,7 +22,7 @@ class _InsightState extends State<Insight> {
   String? _username;
   int? _userId;
   FocusNode _focusNode = FocusNode();
-  
+
   @override
   void initState() {
     super.initState();
@@ -156,8 +156,9 @@ class _InsightState extends State<Insight> {
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                selectImage(ImageSource.camera);
-                                                // selectImage(ImageSource.gallery);
+                                                // selectImage(ImageSource.camera);
+                                                selectImage(
+                                                    ImageSource.gallery);
                                               },
                                               icon: Icon(
                                                 Icons.camera_alt_outlined,
@@ -185,24 +186,29 @@ class _InsightState extends State<Insight> {
     }
 
     _postKey.currentState!.save();
-    print("___post insight");
+    String? base64Image;
+    if (imageFile != null) {
+      List<int> imageBytes = await imageFile!.readAsBytes();
+      base64Image = base64Encode(imageBytes);
+    }
 
-    final formData = FormData.fromMap({
+    FormData data = FormData.fromMap({
       "user": _userId,
       "content": _postData['content'].toString(),
       "attachment": imageFile == null
           ? null
-          : await MultipartFile.fromFile(imageFile!.path, filename: 'imageFile')
+          : await MultipartFile.fromFile(imageFile!.path),
     });
 
     print("______payload submit here____");
-    print(formData);
+    print(data);
     print("_______end print payload here_____");
 
     final endpoint = '${config['apiBaseUrl']}/create_post';
-    final data = json.encode(formData);
+    print(data);
 
     var response = await sendPostRequest(context, endpoint, data);
+    print("__response, ${response}");
 
     setState(() {
       Future.delayed(Duration(seconds: 2), () {
